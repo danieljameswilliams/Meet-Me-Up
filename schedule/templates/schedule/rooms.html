@@ -1,0 +1,13 @@
+{% if places %}
+  <fieldset>
+    <legend><b>V&aelig;lg et m&oslash;delokale</b></legend>
+    <i>Klik ind og se lokalets bookings</i>
+    <ul>
+    {% for place in places %}
+      <li><a href="/room/{{ place.id }}/">{{ place.name }}</a></li>
+    {% endfor %}
+    </ul>
+  </fieldset>
+{% else %}
+  <p>No rooms are available to view.</p>
+{% endif %}
