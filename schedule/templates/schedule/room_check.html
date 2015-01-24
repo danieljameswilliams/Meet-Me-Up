@@ -4,7 +4,10 @@
       <ul>
       {% for meeting in meetings %}
         <strong style="color:red;">M&oslash;delokalet er optaget!</strong>
-        <li>{{ meeting.subject }} - ({{ meeting.start }} / {{ meeting.end }})</li>
+        <li>
+          {{ meeting.subject }} - ({{ meeting.start }} / {{ meeting.end }})
+          <i>Tilføjet af {{ meeting.created_by }}</i>
+        </li>
       {% endfor %}
       </ul>
     {% else %}
@@ -16,6 +19,9 @@
 
             <input type="hidden" name="start_date" value="{{ start_date }}">
             <input type="hidden" name="end_date" value="{{ end_date }}">
+            <input type="hidden" name="created_by" value="{{ user.id }}">
+
+            <input type="text" name="subject" placeholder="Emne">
 
             <button type="submit">Book nu</button>
           </form>

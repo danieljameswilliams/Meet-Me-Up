@@ -1,0 +1,10 @@
+{% if user.is_authenticated %}
+<div>Du er logget ind som {{ user.first_name }}</div>
+<form action="/logout/">
+  <input type="hidden" name="logout" value="True">
+  <button type="submit">Log ud</button>
+</form>
+{% endif %}
+{% if not user.is_authenticated %}
+  IKKE LOGGET IND
+{% endif %}

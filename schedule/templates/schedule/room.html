@@ -3,7 +3,10 @@
     {% if meetings %}
       <ul>
       {% for meeting in meetings %}
-        <li>{{ meeting.subject }} - {{ meeting.pub_date }}</li>
+        <li>
+          <div><b>{{ meeting.subject }}</b> - ({{ meeting.start }} / {{ meeting.end }}</div>
+          <i>Tilføjet af {{ meeting.created_by }}</i><br><br>
+        </li>
       {% endfor %}
       </ul>
     {% else %}

@@ -1,8 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.models import User
 from schedule.models import Place, Meeting
+from datetime import datetime
 
 @csrf_exempt
 def rooms ( request ):
@@ -59,13 +64,22 @@ def roomBook ( request, room_id ):
   if request.method == 'POST':
     start_date = request.POST['start_date']
     end_date = request.POST['end_date']
+    subject = request.POST['subject']
 
     # Check if it is really free again, and not just skipped checking.
     conflicts = roomCheck( request, room_id, True )
     if not conflicts == 0:
       return
 
-    # TODO: Add the meeting to DB
+    meeting = Meeting(
+      created_by = User.objects.get( id = request.user.id ),
+      end = end_date,
+      place = Place.objects.get( id = room_id ),
+      pub_date = datetime.now(),
+      start = start_date,
+      subject = subject
+    )
+    meeting.save( force_insert = True )
 
     template = loader.get_template( 'schedule/room_book.html' )
     context = RequestContext( request )
@@ -73,3 +87,28 @@ def roomBook ( request, room_id ):
     return HttpResponse( template.render( context ) )
   else:
     return HttpResponseRedirect('/')
+
+'''
+  In this function, we only show the template
+  containing a login form, to submit to /login/auth/
+'''
+def login ( request ):
+  template = loader.get_template( 'schedule/login.html' )
+  context = RequestContext( request )
+  return HttpResponse( template.render( context ) )
+
+def create ( request ):
+  if request.method == 'POST':
+    username = request.POST['username']
+    password = request.POST['password']
+    email = request.POST['email']
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
+
+    user = User.objects.create_user( username, email, password )
+    user.first_name = first_name
+    user.email = email
+    user.last_name = last_name
+    user.save()
+
+    return HttpResponseRedirect( '/' )

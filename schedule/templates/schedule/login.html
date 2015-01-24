@@ -1,0 +1,28 @@
+{% include "schedule/partials/header.html" %}
+
+{% if not user.is_authenticated %}
+<fieldset>
+  <legend><b>Login for at se m&oslash;der</b></legend>
+  <br>
+  <form action="{% url 'django.contrib.auth.views.login' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Brugernavn">
+    <input type="text" name="password" placeholder="Kodeord">
+    <button type="submit">Login</button>
+  </form>
+</fieldset>
+<br>
+<fieldset>
+  <legend><b>Opret en ny bruger</b></legend>
+  <br>
+  <form action="/login/create/" method="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Brugernavn">
+    <input type="text" name="password" placeholder="Kodeord">
+    <input type="text" name="email" placeholder="E-mail">
+    <input type="text" name="first_name" placeholder="Fornavn">
+    <input type="text" name="last_name" placeholder="Efternavn">
+    <button type="submit">Opret bruger</button>
+  </form>
+</fieldset>
+{% endif %}
