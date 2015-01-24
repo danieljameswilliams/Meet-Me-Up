@@ -1,16 +1,23 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext, loader
-import dateutil.parser
 
 from schedule.models import Place, Meeting
 
+@csrf_exempt
 def rooms ( request ):
-  places = Place.objects.all()
-  output = ""
+  input_seats = 0
+
+  if request.GET.has_key('seats'):
+    input_seats = request.GET['seats']
+    places = Place.objects.filter( seats__gte = input_seats)
+  else:
+    places = Place.objects.all()
 
   template = loader.get_template( 'schedule/rooms.html' )
   context = RequestContext( request, {
     'places': places,
+    'seats': input_seats
   })
 
   return HttpResponse( template.render( context ) )

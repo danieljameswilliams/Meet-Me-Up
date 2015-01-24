@@ -1,13 +1,29 @@
-{% if places %}
-  <fieldset>
-    <legend><b>V&aelig;lg et m&oslash;delokale</b></legend>
-    <i>Klik ind og se lokalets bookings</i>
-    <ul>
+<fieldset>
+  {% if seats > 0 %}
+    <legend><b>M&oslash;delokaler der matcher dit filter</b></legend>
+    {% else %}
+    <legend><b>Alle M&oslash;delokaler</b></legend>
+  {% endif %}
+  {% if places %}
+  <i>Klik ind og se lokalets bookings</i>
+  <ul>
     {% for place in places %}
-      <li><a href="/room/{{ place.id }}/">{{ place.name }}</a></li>
+    <li><a href="/room/{{ place.id }}/">{{ place.name }} ({{ place.seats }} pladser)</a></li>
     {% endfor %}
-    </ul>
-  </fieldset>
-{% else %}
-  <p>Der findes ingen m&oslash;delokaler</p>
-{% endif %}
+  </ul>
+  {% else %}
+    <p>Der findes ingen m&oslash;delokaler</p>
+  {% endif %}
+</fieldset>
+<br>
+<fieldset>
+  <legend><b>Find passende mødelokale</b></legend>
+  <ul>
+    <li>
+      <form action="/rooms" method="GET">
+        <input type="text" name="seats" placeholder="Min. antal pladser">
+        <button type="submit">Find lokale</button>
+      </form>
+    </li>
+  </ul>
+</fieldset>
