@@ -5,7 +5,7 @@ class PlaceAdmin ( admin.ModelAdmin ):
   fields = ['name']
 
 class MeetingAdmin ( admin.ModelAdmin ):
-  fields = ['subject', 'place', 'pub_date']
+  fields = ['subject', 'place', 'pub_date', 'start', 'end']
 
 admin.site.register( Place, PlaceAdmin )
 admin.site.register( Meeting, MeetingAdmin )

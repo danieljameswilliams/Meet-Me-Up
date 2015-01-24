@@ -1,0 +1,25 @@
+  <fieldset>
+    <legend><b>Check om lokalet er ledigt</b></legend>
+    {% if meetings %}
+      <ul>
+      {% for meeting in meetings %}
+        <strong style="color:red;">M&oslash;delokalet er optaget!</strong>
+        <li>{{ meeting.subject }} - ({{ meeting.start }} / {{ meeting.end }})</li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <ul>
+        <li>
+          <strong style="color:green;">M&oslash;delokalet er ledigt i hele perioden!</strong><br>
+          <form action="/room/{{ room }}/book/" method="POST">
+            {% csrf_token %}
+
+            <input type="hidden" name="start_date" value="{{ start_date }}">
+            <input type="hidden" name="end_date" value="{{ end_date }}">
+
+            <button type="submit">Book nu</button>
+          </form>
+        </li>
+      </ul>
+    {% endif %}
+  </fieldset>

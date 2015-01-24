@@ -3,7 +3,7 @@
     {% if meetings %}
       <ul>
       {% for meeting in meetings %}
-        <li>{{ meeting.subject }}</li>
+        <li>{{ meeting.subject }} - {{ meeting.pub_date }}</li>
       {% endfor %}
       </ul>
     {% else %}
@@ -20,8 +20,12 @@
   <legend><b>Check om lokalet er ledigt</b></legend>
   <ul>
     <li>
-      <input type="text" style="width:250px;" placeholder="Hvorn&aring;r vil du gerne holde dit m&oslash;de?">
-      <button type="submit">Anmod</button>
+      <form action="/room/{{ room }}/check/" method="POST">
+        {% csrf_token %}
+        <input type="text" name="start_date" placeholder="Start">
+        <input type="text" name="end_date" placeholder="Stop">
+        <button type="submit">Anmod</button>
+      </form>
     </li>
   </ul>
 </fieldset>
